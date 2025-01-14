@@ -4,6 +4,7 @@ export interface IUser extends Document {
   name: string;
   phone: string;
   organization: string;
+  password: string;
   isAdmin: boolean;
   isApproved: boolean;
   createdAt: Date;
@@ -14,14 +15,20 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: [true, '이름을 입력해주세요'],
   },
+
+  organization: {
+    type: String,
+    required: [true, '소속을 입력해주세요'],
+  },
   phone: {
     type: String,
     required: [true, '전화번호를 입력해주세요'],
     unique: true,
   },
-  organization: {
+  password: {
     type: String,
-    required: [true, '소속을 입력해주세요'],
+    required: [true, '비밀번호를 입력해주세요'],
+    unique: true,
   },
   isAdmin: {
     type: Boolean,
