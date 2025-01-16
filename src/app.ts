@@ -16,7 +16,7 @@ app.use(
 );
 
 // Routes
-app.use('/auth/users', userRoutes);
+app.use('/auth', userRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.send('Hello TypeScript');
