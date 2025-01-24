@@ -176,3 +176,42 @@ export const deleteUser = async (
     next(error);
   }
 };
+
+// 회원 승인
+export const appoveUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // 관리자 권한 확인
+    if (!req.user?.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: '관리자 권한이 필요합니다.',
+      });
+    }
+
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: '사용자를 찾을 수 없습니다.',
+      });
+    }
+
+    const updateData = { isApproved: true };
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    }).select('-password');
+
+    res.status(200).json({
+      success: true,
+      data: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
