@@ -1,15 +1,19 @@
 import { Router } from 'express';
 import { validateAuth } from '../controllers/auth';
 import { batchAddSlopeData } from '../controllers/slope/slopeAddBatch';
-import { getAllSlopes } from '../controllers/slope/slopeLookUp';
+import {
+  findNearbySlopes,
+  getAllSlopes,
+} from '../controllers/slope/slopeLookUp';
 
 const router = Router();
+
+router.get('/nearby', findNearbySlopes as any);
 
 router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 라우트 앞에 배치
 
 router.post('/batch', ...(batchAddSlopeData as any));
 router.get('/batch', getAllSlopes as any);
-
 export default router;
 
 // POST /api/slopes          // 단일 데이터 추가
