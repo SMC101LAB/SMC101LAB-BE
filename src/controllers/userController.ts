@@ -70,7 +70,7 @@ export const updateUser = async (
 ) => {
   try {
     const { userId } = req.params;
-    const { name, phone, organization, password, currentPassword } = req.body;
+    const { name, phone, organization, isAdmin } = req.body;
 
     // 본인이거나 관리자만 수정 가능
     if (req.user?.id !== userId && !req.user?.isAdmin) {
@@ -88,33 +88,12 @@ export const updateUser = async (
       });
     }
 
-    // 비밀번호 변경 시 현재 비밀번호 확인
-    if (password) {
-      if (!currentPassword) {
-        return res.status(400).json({
-          success: false,
-          message: '현재 비밀번호를 입력해주세요.',
-        });
-      }
-
-      const isPasswordValid = await bcrypt.compare(
-        currentPassword,
-        user.password
-      );
-      if (!isPasswordValid) {
-        return res.status(401).json({
-          success: false,
-          message: '현재 비밀번호가 일치하지 않습니다.',
-        });
-      }
-    }
-
     // 업데이트할 데이터 객체 생성
     const updateData: any = {};
     if (name) updateData.name = name;
     if (phone) updateData.phone = phone;
     if (organization) updateData.organization = organization;
-    if (password) updateData.password = await bcrypt.hash(password, 10);
+    if (isAdmin) updateData.isAdmin = isAdmin;
 
     // 전화번호 중복 확인
     if (phone) {
