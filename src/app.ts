@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // 특정 출처 허용
+    origin: ['http://localhost:5173', 'https://smc101lab.netlify.app'], // 특정 출처 허용
     credentials: true, // 인증 정보 허용
   })
 );
