@@ -134,13 +134,20 @@ export const batchAddSlopeData = [
                 ? new Date(row.붕괴위험지구지정일자)
                 : null,
             },
+            // maintenanceProject:
+            //   row.정비사업년도 || row.정비사업유형코드
+            //     ? {
+            //         year: String(row.정비사업년도 || '').trim(),
+            //         type: String(row.정비사업유형코드 || '').trim(),
+            //       }
+            //     : undefined,
             maintenanceProject:
               row.정비사업년도 || row.정비사업유형코드
                 ? {
-                    year: String(row.정비사업년도 || '').trim(),
-                    type: String(row.정비사업유형코드 || '').trim(),
+                    year: String(row.정비사업년도 || ''),
+                    type: String(row.정비사업유형코드 || ''),
                   }
-                : undefined,
+                : null,
           };
         });
 

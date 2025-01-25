@@ -11,6 +11,7 @@ export interface ISlope extends Document {
     roadAddress?: string;
     coordinates: {
       start: {
+        type: string;
         coordinates: [number, number];
         startLatDegree: number;
         startLatMinute: number;
@@ -20,6 +21,7 @@ export interface ISlope extends Document {
         startLongSecond: number;
       };
       end: {
+        type: string;
         coordinates: [number, number];
         endLatDegree: number;
         endLatMinute: number;
@@ -58,7 +60,6 @@ const slopeSchema = new Schema<ISlope>({
   managementNo: {
     type: String,
     required: true,
-    unique: true,
   },
   name: {
     type: String,
@@ -72,6 +73,7 @@ const slopeSchema = new Schema<ISlope>({
     roadAddress: String,
     coordinates: {
       start: {
+        type: { type: String, default: 'Point' },
         coordinates: {
           type: [Number],
           required: true,
@@ -84,6 +86,7 @@ const slopeSchema = new Schema<ISlope>({
         startLongSecond: Number,
       },
       end: {
+        type: { type: String, default: 'Point' },
         coordinates: {
           type: [Number],
           required: true,
@@ -116,9 +119,13 @@ const slopeSchema = new Schema<ISlope>({
     designated: Boolean,
     designationDate: Date,
   },
+  // maintenanceProject: {
+  //   year: String,
+  //   type: String,
+  // },
   maintenanceProject: {
-    year: String,
-    type: String,
+    year: { type: String },
+    type: { type: String },
   },
   createdAt: {
     type: Date,
@@ -133,7 +140,6 @@ interface CoordinateInput {
   Second: number;
 }
 
-//위도 경도 계산산
 const calcCoordinate = ({
   Degree,
   Minute,
@@ -141,47 +147,94 @@ const calcCoordinate = ({
 }: CoordinateInput): number => {
   return Math.round(Degree || 0) + (Minute || 0) / 60 + (Second || 0) / 3600;
 };
-
 slopeSchema.pre('save', function (next) {
   if (this.isModified('location.coordinates')) {
     const start = this.location.coordinates.start;
     const end = this.location.coordinates.end;
 
-    const startLat: CoordinateInput = {
+    const startLat = calcCoordinate({
       Degree: start.startLatDegree,
       Minute: start.startLatMinute,
       Second: start.startLatSecond,
-    };
+    });
 
-    const startLong: CoordinateInput = {
+    const startLong = calcCoordinate({
       Degree: start.startLongDegree,
       Minute: start.startLongMinute,
       Second: start.startLongSecond,
-    };
+    });
 
-    const endLat: CoordinateInput = {
+    // GeoJSON format: [longitude, latitude]
+    this.location.coordinates.start.coordinates = [startLong, startLat];
+    this.location.coordinates.start.type = 'Point';
+
+    const endLat = calcCoordinate({
       Degree: end.endLatDegree,
       Minute: end.endLatMinute,
       Second: end.endLatSecond,
-    };
+    });
 
-    const endLong: CoordinateInput = {
+    const endLong = calcCoordinate({
       Degree: end.endLongDegree,
       Minute: end.endLongMinute,
       Second: end.endLongSecond,
-    };
+    });
 
-    this.location.coordinates.start.coordinates = [
-      calcCoordinate(startLong),
-      calcCoordinate(startLat),
-    ];
-
-    this.location.coordinates.end.coordinates = [
-      calcCoordinate(endLong),
-      calcCoordinate(endLat),
-    ];
+    this.location.coordinates.end.coordinates = [endLong, endLat];
+    this.location.coordinates.end.type = 'Point';
   }
   next();
 });
+// //위도 경도 계산
+// const calcCoordinate = ({
+//   Degree,
+//   Minute,
+//   Second,
+// }: CoordinateInput): number => {
+//   return Math.round(Degree || 0) + (Minute || 0) / 60 + (Second || 0) / 3600;
+// };
 
+// slopeSchema.pre('save', function (next) {
+//   if (this.isModified('location.coordinates')) {
+//     const start = this.location.coordinates.start;
+//     const end = this.location.coordinates.end;
+
+//     const startLat: CoordinateInput = {
+//       Degree: start.startLatDegree,
+//       Minute: start.startLatMinute,
+//       Second: start.startLatSecond,
+//     };
+
+//     const startLong: CoordinateInput = {
+//       Degree: start.startLongDegree,
+//       Minute: start.startLongMinute,
+//       Second: start.startLongSecond,
+//     };
+
+//     const endLat: CoordinateInput = {
+//       Degree: end.endLatDegree,
+//       Minute: end.endLatMinute,
+//       Second: end.endLatSecond,
+//     };
+
+//     const endLong: CoordinateInput = {
+//       Degree: end.endLongDegree,
+//       Minute: end.endLongMinute,
+//       Second: end.endLongSecond,
+//     };
+
+//     this.location.coordinates.start.coordinates = [
+//       calcCoordinate(startLong),
+//       calcCoordinate(startLat),
+//     ];
+
+//     this.location.coordinates.end.coordinates = [
+//       calcCoordinate(endLong),
+//       calcCoordinate(endLat),
+//     ];
+//   }
+//   next();
+// });
+
+slopeSchema.index({ 'location.coordinates.start.coordinates': '2dsphere' });
 export default model<ISlope>('Slope', slopeSchema);
