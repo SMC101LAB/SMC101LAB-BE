@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import connectDB from './config/database';
 import userRoutes from './routes/userRoutes';
+import slopeRoutes from './routes/slopeRoutes';
 import cors from 'cors';
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(
 
 // Routes
 app.use('/auth', userRoutes);
+app.use('/slopes', slopeRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.send('Hello TypeScript');
