@@ -32,12 +32,30 @@ export const getOutlierData = async (
   }
 };
 //중복값찾기
+// const findDuplicates = async () => {
+//   const duplicates = await Slope.aggregate([
+//     {
+//       $group: {
+//         _id: '$managementNo', // 확인하고 싶은 필드
+//         count: { $sum: 1 },
+//       },
+//     },
+//     {
+//       $match: {
+//         count: { $gt: 1 },
+//       },
+//     },
+//   ]);
+//   console.log('Duplicates:', duplicates);
+//   return duplicates;
+// };
 const findDuplicates = async () => {
   const duplicates = await Slope.aggregate([
     {
       $group: {
-        _id: '$managementNo', // 확인하고 싶은 필드
+        _id: '$managementNo',
         count: { $sum: 1 },
+        docs: { $push: '$$ROOT' }, // 전체 문서를 배열로 수집
       },
     },
     {
@@ -45,8 +63,14 @@ const findDuplicates = async () => {
         count: { $gt: 1 },
       },
     },
+    {
+      $unwind: '$docs', // 배열을 개별 문서로 풀어냄
+    },
+    {
+      $replaceRoot: { newRoot: '$docs' }, // 원본 문서 구조로 변환
+    },
   ]);
-  console.log('Duplicates:', duplicates);
+
   return duplicates;
 };
 
