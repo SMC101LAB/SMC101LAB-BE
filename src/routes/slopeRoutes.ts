@@ -6,6 +6,7 @@ import {
   getAllSlopes,
 } from '../controllers/slope/slopeLookUp';
 import { getOutlierData } from '../controllers/slope/slopeOutlierData';
+import { deleteSlopes } from '../controllers/slope/slopeController';
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 �
 router.post('/batch', ...(batchAddSlopeData as any));
 router.get('/batch', getAllSlopes as any);
 router.get('/outlier', getOutlierData as any);
+router.delete('/delete', deleteSlopes as any);
 export default router;
 
 // POST /api/slopes          // 단일 데이터 추가
