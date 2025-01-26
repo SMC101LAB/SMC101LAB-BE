@@ -14,8 +14,8 @@ import { searchSlopes } from '../controllers/slope/slopeSearch'; // 데이터 �
 
 const router = Router();
 
-router.get('/nearby', findNearbySlopes as any);
-router.get('/search', searchSlopes as any);
+router.post('/nearby', findNearbySlopes as any);
+router.post('/search', searchSlopes as any);
 router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 라우트 앞에 배치
 
 router.post('/batch', ...(batchAddSlopeData as any));
