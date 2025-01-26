@@ -7,10 +7,12 @@ import {
 } from '../controllers/slope/slopeLookUp';
 import { getOutlierData } from '../controllers/slope/slopeOutlierData';
 import { deleteSlopes } from '../controllers/slope/slopeController';
+import { searchSlopes } from '../controllers/slope/slopeSearch';
 
 const router = Router();
 
 router.get('/nearby', findNearbySlopes as any);
+router.get('/search', searchSlopes as any);
 
 router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 라우트 앞에 배치
 
