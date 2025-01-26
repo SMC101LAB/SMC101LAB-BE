@@ -31,24 +31,8 @@ export const getOutlierData = async (
     next(error);
   }
 };
+
 //중복값찾기
-// const findDuplicates = async () => {
-//   const duplicates = await Slope.aggregate([
-//     {
-//       $group: {
-//         _id: '$managementNo', // 확인하고 싶은 필드
-//         count: { $sum: 1 },
-//       },
-//     },
-//     {
-//       $match: {
-//         count: { $gt: 1 },
-//       },
-//     },
-//   ]);
-//   console.log('Duplicates:', duplicates);
-//   return duplicates;
-// };
 const findDuplicates = async () => {
   const duplicates = await Slope.aggregate([
     {

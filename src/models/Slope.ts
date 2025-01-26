@@ -119,10 +119,6 @@ const slopeSchema = new Schema<ISlope>({
     designated: Boolean,
     designationDate: Date,
   },
-  // maintenanceProject: {
-  //   year: String,
-  //   type: String,
-  // },
   maintenanceProject: {
     year: { type: String },
     type: { type: String },
@@ -140,7 +136,7 @@ interface CoordinateInput {
   Second: number;
 }
 
-const calcCoordinate = ({
+export const calcCoordinate = ({
   Degree,
   Minute,
   Second,
