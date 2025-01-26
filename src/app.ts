@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import connectDB from './config/database';
 import userRoutes from './routes/userRoutes';
+import slopeRoutes from './routes/slopeRoutes';
 import cors from 'cors';
 
 const app = express();
@@ -10,13 +11,14 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // 특정 출처 허용
+    origin: ['http://localhost:5173', 'https://smc101lab.netlify.app'], // 특정 출처 허용
     credentials: true, // 인증 정보 허용
   })
 );
 
 // Routes
 app.use('/auth', userRoutes);
+app.use('/slopes', slopeRoutes);
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.send('Hello TypeScript');

@@ -4,6 +4,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  appoveUser,
 } from '../controllers/userController';
 import { register, login, validateAuth } from '../controllers/auth';
 
@@ -19,5 +20,5 @@ router.get('/users', getAllUsers as any);
 router.get('/users/:userId', getUser as any);
 router.put('/users/:userId', updateUser as any);
 router.delete('/users/:userId', deleteUser as any);
-
+router.put('/users/approve/:userId', appoveUser as any);
 export default router;
