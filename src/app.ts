@@ -11,7 +11,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://smc101lab.netlify.app'], // 특정 출처 허용
+    origin: [
+      'http://localhost:5173',
+      'https://smc101lab.netlify.app',
+      'http://smc101lab.s3-website.ap-northeast-2.amazonaws.com/',
+    ], // 특정 출처 허용
     credentials: true, // 인증 정보 허용
   })
 );
@@ -26,7 +30,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Connect to MongoDB
 connectDB().then(() => {
-  app.listen('3000', () => {
+  app.listen(3000, '0.0.0.0', () => {
     console.log('Listening on Port ::: ' + 3000);
   });
 });
