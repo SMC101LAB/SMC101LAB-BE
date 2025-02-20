@@ -8,7 +8,7 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
-interface ExcelRow {
+export interface ExcelRow {
   관리번호: string;
   급경사지명: string;
   시행청명: string;
@@ -124,6 +124,7 @@ export const batchAddSlopeData = [
             },
             inspections: row.안전점검일자
               ? {
+                  serialNumber: row.안전점검일련번호,
                   date: new Date(row.안전점검일자),
                   result: row.안전점검결과코드,
                 }

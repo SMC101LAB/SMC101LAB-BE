@@ -41,6 +41,7 @@ export interface ISlope extends Document {
     authority?: string;
   };
   inspections: {
+    serialNumber: string;
     date: Date;
     result: string;
   };
@@ -121,6 +122,7 @@ const slopeSchema = new Schema<ISlope>({
     authority: String, // 관리주체구분코드
   },
   inspections: {
+    serialNumber: String, // 안전점검일련번호
     date: Date, // 안전점검일자
     result: String, // 안전점검결과코드
   },
