@@ -123,17 +123,20 @@ export const batchAddSlopeData = [
               authority: row.관리주체구분코드,
             },
             inspections: row.안전점검일자
-              ? [
-                  {
-                    date: new Date(row.안전점검일자),
-                    result: row.안전점검결과코드,
-                    riskLevel: row.재해위험도평가등급코드,
-                    riskType: row.재해위험도평가종류코드,
-                    riskScore: row.재해위험도평가점수합계, // 추가
-                    serialNumber: row.재해위험도평가일련번호, // 추가
-                  },
-                ]
-              : [],
+              ? {
+                  date: new Date(row.안전점검일자),
+                  result: row.안전점검결과코드,
+                }
+              : {},
+            disaster: {
+              riskDate: row.재해위험도평가일자
+                ? new Date(row.재해위험도평가일자)
+                : null,
+              serialNumber: row.재해위험도평가일련번호, // 추가
+              riskLevel: row.재해위험도평가등급코드,
+              riskScore: row.재해위험도평가점수합계, // 추가
+              riskType: row.재해위험도평가종류코드,
+            },
             collapseRisk: {
               districtNo: row.붕괴위험지구번호,
               districtName: row.붕괴위험지구명,

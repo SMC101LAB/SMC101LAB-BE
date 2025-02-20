@@ -40,14 +40,17 @@ export interface ISlope extends Document {
     department?: string;
     authority?: string;
   };
-  inspections: Array<{
+  inspections: {
     date: Date;
     result: string;
-    riskLevel: string;
-    riskType: string;
-    riskScore: string;
+  };
+  disaster: {
     serialNumber: string;
-  }>;
+    riskDate: Date;
+    riskLevel: string;
+    riskScore: string;
+    riskType: string;
+  };
   collapseRisk: {
     districtNo: string;
     districtName: string;
@@ -117,16 +120,17 @@ const slopeSchema = new Schema<ISlope>({
     department: String, // 소관부서명
     authority: String, // 관리주체구분코드
   },
-  inspections: [
-    {
-      date: Date, // 안전점검일자
-      result: String, // 안전점검결과코드
-      riskLevel: String, // 재해위험도평가등급코드
-      riskType: String, // 재해위험도평가종류코드
-      riskScore: String, // 재해위험도평가점수합계
-      serialNumber: String, // 재해위험도평가일련번호
-    },
-  ],
+  inspections: {
+    date: Date, // 안전점검일자
+    result: String, // 안전점검결과코드
+  },
+  disaster: {
+    serialNumber: String, // 재해위험도평가일련번호
+    riskDate: Date, //재해위험도평가일자
+    riskLevel: String, // 재해위험도평가등급코드
+    riskScore: String, // 재해위험도평가점수합계
+    riskType: String, // 재해위험도평가종류코드
+  },
   collapseRisk: {
     districtNo: String, // 붕괴위험지구번호
     districtName: String, // 붕괴위험지구명
