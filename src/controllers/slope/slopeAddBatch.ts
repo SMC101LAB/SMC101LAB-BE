@@ -18,7 +18,7 @@ interface ExcelRow {
   시군구: string;
   읍면동: string;
   상세주소: string;
-  도로명주소: string;
+  도로명상세주소: string;
   산주소여부: string;
   주지번: string;
   부지번: string;
@@ -78,7 +78,7 @@ export const batchAddSlopeData = [
               city: row.시군구,
               district: row.읍면동,
               address: row.상세주소,
-              roadAddress: row.도로명주소,
+              roadAddress: row.도로명상세주소,
               mountainAddress: row.산주소여부, // 추가
               mainLotNumber: row.주지번, // 추가
               subLotNumber: row.부지번, // 추가
