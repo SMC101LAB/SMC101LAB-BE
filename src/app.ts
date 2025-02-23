@@ -24,7 +24,7 @@ app.use(
 // Routes
 app.use('/auth', userRoutes);
 app.use('/slopes', slopeRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.send('Hello TypeScript');
 });
