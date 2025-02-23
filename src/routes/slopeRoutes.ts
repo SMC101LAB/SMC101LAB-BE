@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { validateAuth } from '../controllers/auth';
-import { batchAddSlopeData } from '../controllers/slope/slopeAddBatch'; //데이터 엑셀 추가
+import createSlope, {
+  batchAddSlopeData,
+} from '../controllers/slope/slopeAddBatch'; //데이터 엑셀 추가
 import {
   downloadSlopesExcel,
   findNearbySlopes,
@@ -22,6 +24,7 @@ router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 �
 router.post('/batch', ...(batchAddSlopeData as any));
 router.get('/batch', getAllSlopes as any);
 router.get('/outlier', getOutlierData as any);
+router.post('/create', createSlope as any);
 router.delete('/delete', deleteSlopes as any);
 router.put('/update', updateSlopes as any);
 router.get('/download', downloadSlopesExcel as any);
