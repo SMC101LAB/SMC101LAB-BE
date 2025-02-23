@@ -216,58 +216,6 @@ export const updateCommentsSlope = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// // 댓글 삭제
-// export const deleteCommentsSlope = async (req: AuthRequest, res: Response) => {
-//   try {
-//     const { commentId } = req.params;
-//     const userId = req.user.id;
-
-//     if (!mongoose.Types.ObjectId.isValid(commentId)) {
-//       return res.status(400).json({
-//         success: false,
-//         error: '유효하지 않은 commentId입니다.',
-//       });
-//     }
-
-//     const comment = await Comment.findById(commentId);
-
-//     if (!comment) {
-//       return res.status(404).json({
-//         success: false,
-//         error: '댓글을 찾을 수 없습니다.',
-//       });
-//     }
-
-//     if (comment.userId.toString() !== userId) {
-//       return res.status(403).json({
-//         success: false,
-//         error: '댓글 삭제 권한이 없습니다.',
-//       });
-//     }
-
-//     if (comment.imageUrls && comment.imageUrls.length > 0) {
-//       comment.imageUrls.forEach((url) => {
-//         const imagePath = path.join(__dirname, '..', url);
-//         if (fs.existsSync(imagePath)) {
-//           fs.unlinkSync(imagePath);
-//         }
-//       });
-//     }
-
-//     await Comment.findByIdAndDelete(commentId);
-
-//     res.status(200).json({
-//       success: true,
-//       message: '댓글이 성공적으로 삭제되었습니다.',
-//     });
-//   } catch (error) {
-//     console.error('Error in deleteCommentsSlope:', error);
-//     res.status(500).json({
-//       success: false,
-//       error: '댓글 삭제 중 오류가 발생했습니다.',
-//     });
-//   }
-// };
 export const deleteCommentsSlope = async (req: AuthRequest, res: Response) => {
   try {
     const { commentId } = req.params;
