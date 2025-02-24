@@ -15,7 +15,7 @@ app.use(
       'http://localhost:5173',
       'https://smc101lab.netlify.app',
       'http://smc101lab.s3-website.ap-northeast-2.amazonaws.com',
-      'https://smc101lab.com/',
+      'https://smc101lab.com',
     ],
     credentials: true,
   })
