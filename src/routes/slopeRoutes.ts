@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { validateAuth } from '../controllers/auth';
 import { batchAddSlopeData } from '../controllers/slope/slopeAddBatch'; //데이터 엑셀 추가
 import {
+  downloadSlopesExcel,
   findNearbySlopes,
   getAllSlopes,
 } from '../controllers/slope/slopeLookUp'; // 근처 데이터 조회, 전체 데이터 조회
@@ -23,6 +24,7 @@ router.get('/batch', getAllSlopes as any);
 router.get('/outlier', getOutlierData as any);
 router.delete('/delete', deleteSlopes as any);
 router.put('/update', updateSlopes as any);
+router.get('/download', downloadSlopesExcel as any);
 export default router;
 
 // POST /api/slopes          // 단일 데이터 추가

@@ -8,7 +8,7 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
-interface ExcelRow {
+export interface ExcelRow {
   관리번호: string;
   급경사지명: string;
   시행청명: string;
@@ -18,7 +18,10 @@ interface ExcelRow {
   시군구: string;
   읍면동: string;
   상세주소: string;
-  도로명주소?: string;
+  도로명상세주소: string;
+  산주소여부: string;
+  주지번: string;
+  부지번: string;
   GIS좌표시점위도도: string;
   GIS좌표시점위도분: string;
   GIS좌표시점위도초: string;
@@ -31,15 +34,21 @@ interface ExcelRow {
   GIS좌표종점경도도: string;
   GIS좌표종점경도분: string;
   GIS좌표종점경도초: string;
+  급경사지일제조사이력번호: string;
+  일제조사일자: string;
   붕괴위험지구번호?: string;
   붕괴위험지구명?: string;
   붕괴위험지구지정여부?: string;
   붕괴위험지구지정일자?: string;
   정비사업년도?: string;
   정비사업유형코드?: string;
+  안전점검일련번호?: string;
   안전점검일자?: string;
   안전점검결과코드?: string;
+  재해위험도평가일련번호: string;
+  재해위험도평가일자: string;
   재해위험도평가등급코드?: string;
+  재해위험도평가점수합계: string;
   재해위험도평가종류코드?: string;
 }
 
@@ -61,12 +70,6 @@ export const batchAddSlopeData = [
       const slopeData = rows
         .filter((row) => row.관리번호 && row.급경사지명)
         .map((row) => {
-          // 디버깅용 콘솔
-          // console.log('Row data:', row);
-          // console.log('Maintenance project data:', {
-          //   year: row.정비사업년도,
-          //   type: row.정비사업유형코드,
-          // });
           return {
             managementNo: row.관리번호,
             name: row.급경사지명,
@@ -75,7 +78,10 @@ export const batchAddSlopeData = [
               city: row.시군구,
               district: row.읍면동,
               address: row.상세주소,
-              roadAddress: row.도로명주소,
+              roadAddress: row.도로명상세주소,
+              mountainAddress: row.산주소여부, // 추가
+              mainLotNumber: row.주지번, // 추가
+              subLotNumber: row.부지번, // 추가
               coordinates: {
                 start: {
                   coordinates: [
@@ -117,15 +123,21 @@ export const batchAddSlopeData = [
               authority: row.관리주체구분코드,
             },
             inspections: row.안전점검일자
-              ? [
-                  {
-                    date: new Date(row.안전점검일자),
-                    result: row.안전점검결과코드,
-                    riskLevel: row.재해위험도평가등급코드,
-                    riskType: row.재해위험도평가종류코드,
-                  },
-                ]
-              : [],
+              ? {
+                  serialNumber: row.안전점검일련번호,
+                  date: new Date(row.안전점검일자),
+                  result: row.안전점검결과코드,
+                }
+              : {},
+            disaster: {
+              riskDate: row.재해위험도평가일자
+                ? new Date(row.재해위험도평가일자)
+                : null,
+              serialNumber: row.재해위험도평가일련번호, // 추가
+              riskLevel: row.재해위험도평가등급코드,
+              riskScore: row.재해위험도평가점수합계, // 추가
+              riskType: row.재해위험도평가종류코드,
+            },
             collapseRisk: {
               districtNo: row.붕괴위험지구번호,
               districtName: row.붕괴위험지구명,
@@ -141,9 +153,13 @@ export const batchAddSlopeData = [
                     type: String(row.정비사업유형코드 || ''),
                   }
                 : null,
+            slopeInspectionHistory: {
+              // 추가
+              historyNumber: row.급경사지일제조사이력번호,
+              inspectionDate: row.일제조사일자,
+            },
           };
         });
-
       await Slope.insertMany(slopeData);
 
       res.status(200).json({
