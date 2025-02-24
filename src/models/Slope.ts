@@ -64,7 +64,7 @@ export interface ISlope extends Document {
   };
   slopeInspectionHistory: {
     historyNumber: string;
-    inspectionDate: string;
+    inspectionDate: Date;
   };
   createdAt: Date;
 }
@@ -145,7 +145,7 @@ const slopeSchema = new Schema<ISlope>({
   },
   slopeInspectionHistory: {
     historyNumber: String, // 급경사지일제조사이력번호
-    inspectionDate: String, // 일제조사일자
+    inspectionDate: Date, // 일제조사일자
   },
   createdAt: {
     type: Date,

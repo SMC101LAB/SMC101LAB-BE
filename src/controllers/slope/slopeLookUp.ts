@@ -232,6 +232,22 @@ export const downloadSlopesExcel = async (
         right: { style: 'thin' },
       };
     });
+
+    function formatDate(date: Date | string | undefined): string {
+      if (!date) return '';
+
+      const d = date instanceof Date ? date : new Date(date);
+
+      // 유효한 날짜인지 확인
+      if (isNaN(d.getTime())) return '';
+
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    }
+
     // 데이터 추가
     slopes.forEach((slope) => {
       const row: ExcelRow = {
@@ -292,15 +308,14 @@ export const downloadSlopesExcel = async (
         붕괴위험지구지정여부: slope.collapseRisk?.designated
           ? '지정'
           : '미지정',
-        붕괴위험지구지정일자:
-          slope.collapseRisk?.designationDate?.toString() || '',
+        붕괴위험지구지정일자: slope.collapseRisk?.designationDate || '',
         정비사업년도: slope.maintenanceProject?.year || '',
         정비사업유형코드: slope.maintenanceProject?.type || '',
         안전점검일련번호: '', // 모델에 해당 필드가 없는 것 같습니다
-        안전점검일자: slope.inspections?.date?.toString() || '',
+        안전점검일자: slope.inspections?.date || '',
         안전점검결과코드: slope.inspections?.result || '',
         재해위험도평가일련번호: slope.disaster?.serialNumber || '',
-        재해위험도평가일자: slope.disaster?.riskDate?.toString() || '',
+        재해위험도평가일자: slope.disaster?.riskDate || '',
         재해위험도평가등급코드: slope.disaster?.riskLevel || '',
         재해위험도평가점수합계: slope.disaster?.riskScore || '',
         재해위험도평가종류코드: slope.disaster?.riskType || '',
