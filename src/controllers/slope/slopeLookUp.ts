@@ -64,6 +64,7 @@ export const getAllSlopes = async (
 
     // 페이지네이션된 데이터 조회
     const slopes = await Slope.find(filterQuery)
+      .lean()
       .skip(page * pageSize)
       .limit(pageSize)
       .sort({ createdAt: -1 });
