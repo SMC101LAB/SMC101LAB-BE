@@ -122,13 +122,11 @@ export const batchAddSlopeData = [
               department: row.소관부서명,
               authority: row.관리주체구분코드,
             },
-            inspections: row.안전점검일자
-              ? {
-                  serialNumber: row.안전점검일련번호,
-                  date: new Date(row.안전점검일자),
-                  result: row.안전점검결과코드,
-                }
-              : {},
+            inspections: {
+              serialNumber: row.안전점검일련번호 || '',
+              date: row.안전점검일자 ? new Date(row.안전점검일자) : null,
+              result: row.안전점검결과코드 || '',
+            },
             disaster: {
               riskDate: row.재해위험도평가일자
                 ? new Date(row.재해위험도평가일자)
