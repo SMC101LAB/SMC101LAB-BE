@@ -311,7 +311,7 @@ export const downloadSlopesExcel = async (
         붕괴위험지구지정일자: slope.collapseRisk?.designationDate || '',
         정비사업년도: slope.maintenanceProject?.year || '',
         정비사업유형코드: slope.maintenanceProject?.type || '',
-        안전점검일련번호: '', // 모델에 해당 필드가 없는 것 같습니다
+        안전점검일련번호: slope.inspections?.serialNumber || '',
         안전점검일자: slope.inspections?.date || '',
         안전점검결과코드: slope.inspections?.result || '',
         재해위험도평가일련번호: slope.disaster?.serialNumber || '',
