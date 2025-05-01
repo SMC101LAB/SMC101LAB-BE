@@ -7,6 +7,7 @@ import { ExcelRow } from './slopeAddBatch';
 interface FilterQuery {
   'location.province'?: string;
   'location.city'?: RegExp;
+  'priority.grade'?: RegExp;
   $or?: Array<{ [key: string]: RegExp }>;
 }
 
@@ -27,6 +28,7 @@ export const getAllSlopes = async (
     const page = parseInt(req.query.page as string) || 0;
     const pageSize = parseInt(req.query.pageSize as string) || 50;
     const city = req.query.city as string;
+    const grade = req.query.grade as string;
     const county = req.query.county as string;
     const searchQuery = req.query.searchQuery as string;
 
@@ -40,6 +42,8 @@ export const getAllSlopes = async (
         filterQuery['location.city'] = new RegExp(county, 'i');
       }
     }
+    if (grade && grade !== '선택안함')
+      filterQuery['priority.grade'] = new RegExp(`^${grade}$`);
 
     // 검색어 필터 적용
     if (searchQuery) {
@@ -56,6 +60,11 @@ export const getAllSlopes = async (
         { 'location.roadAddress': new RegExp(searchQuery, 'i') },
         { 'disaster.riskType': new RegExp(searchQuery, 'i') },
         { 'disaster.riskLevel': new RegExp(searchQuery, 'i') },
+        { 'priority.usage': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeNature': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeType': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeStructure': new RegExp(searchQuery, 'i') },
+        { 'priority.grade': new RegExp(searchQuery, 'i') },
       ];
     }
 
