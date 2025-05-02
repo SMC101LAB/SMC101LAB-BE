@@ -66,6 +66,22 @@ export interface ISlope extends Document {
     historyNumber: string;
     inspectionDate: Date;
   };
+  priority: {
+    usage: string; // 비탈면용도
+    slopeNature: string; // 자연/인공 구분
+    slopeType: string; // 비탈면유형
+    slopeStructure: string; // 비탈면구조
+    maxVerticalHeight: string; // 최고수직고 (단위: m)
+    longitudinalLength: string; // 종단길이 (단위: m)
+    averageSlope: string; // 평균경사 (단위: 도)
+    image: {
+      //위치도
+      url: string; //url
+      createdAt: Date; //이미지 생성날짜
+    };
+    Score: string; //점수
+    grade: string; // 등급
+  };
   createdAt: Date;
 }
 
@@ -146,6 +162,21 @@ const slopeSchema = new Schema<ISlope>({
   slopeInspectionHistory: {
     historyNumber: String, // 급경사지일제조사이력번호
     inspectionDate: Date, // 일제조사일자
+  },
+  priority: {
+    usage: String, // 비탈면용도
+    slopeNature: String, // 자연/인공 구분
+    slopeType: String, // 비탈면유형
+    slopeStructure: String, // 비탈면구조
+    maxVerticalHeight: String, // 최고수직고 (단위: m)
+    longitudinalLength: String, // 종단길이 (단위: m)
+    averageSlope: String, // 평균경사 (단위: 도)
+    image: {
+      url: String, // url
+      createdAt: Date, // 이미지 생성날짜
+    },
+    Score: String, // 점수
+    grade: String, // 등급
   },
   createdAt: {
     type: Date,

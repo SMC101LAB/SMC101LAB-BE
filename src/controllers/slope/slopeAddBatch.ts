@@ -50,6 +50,16 @@ export interface ExcelRow {
   재해위험도평가등급코드?: string;
   재해위험도평가점수합계: string;
   재해위험도평가종류코드?: string;
+  비탈면용도: string;
+  '자연/인공': string;
+  비탈면유형: string;
+  비탈면구조: string;
+  최고수직고: string;
+  종단길이: string;
+  평균경사: string;
+  위치도: string;
+  점수: string;
+  등급: string;
 }
 
 export const batchAddSlopeData = [
@@ -79,9 +89,9 @@ export const batchAddSlopeData = [
               district: row.읍면동,
               address: row.상세주소,
               roadAddress: row.도로명상세주소,
-              mountainAddress: row.산주소여부, // 추가
-              mainLotNumber: row.주지번, // 추가
-              subLotNumber: row.부지번, // 추가
+              mountainAddress: row.산주소여부,
+              mainLotNumber: row.주지번,
+              subLotNumber: row.부지번,
               coordinates: {
                 start: {
                   coordinates: [
@@ -131,9 +141,9 @@ export const batchAddSlopeData = [
               riskDate: row.재해위험도평가일자
                 ? new Date(row.재해위험도평가일자)
                 : null,
-              serialNumber: row.재해위험도평가일련번호, // 추가
+              serialNumber: row.재해위험도평가일련번호,
               riskLevel: row.재해위험도평가등급코드,
-              riskScore: row.재해위험도평가점수합계, // 추가
+              riskScore: row.재해위험도평가점수합계,
               riskType: row.재해위험도평가종류코드,
             },
             collapseRisk: {
@@ -152,9 +162,20 @@ export const batchAddSlopeData = [
                   }
                 : null,
             slopeInspectionHistory: {
-              // 추가
               historyNumber: row.급경사지일제조사이력번호,
               inspectionDate: row.일제조사일자,
+            },
+            priority: {
+              usage: row.비탈면용도 || '',
+              slopeNature: row['자연/인공'] || '',
+              slopeType: row.비탈면유형 || '',
+              slopeStructure: row.비탈면구조 || '',
+              maxVerticalHeight: row.최고수직고 || '',
+              longitudinalLength: row.종단길이 || '',
+              averageSlope: row.평균경사 || '',
+              images: [],
+              Score: row.점수 || '',
+              grade: row.등급 || '',
             },
           };
         });

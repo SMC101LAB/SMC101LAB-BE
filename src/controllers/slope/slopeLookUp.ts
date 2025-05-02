@@ -7,6 +7,7 @@ import { ExcelRow } from './slopeAddBatch';
 interface FilterQuery {
   'location.province'?: string;
   'location.city'?: RegExp;
+  'priority.grade'?: RegExp;
   $or?: Array<{ [key: string]: RegExp }>;
 }
 
@@ -27,6 +28,7 @@ export const getAllSlopes = async (
     const page = parseInt(req.query.page as string) || 0;
     const pageSize = parseInt(req.query.pageSize as string) || 50;
     const city = req.query.city as string;
+    const grade = req.query.grade as string;
     const county = req.query.county as string;
     const searchQuery = req.query.searchQuery as string;
 
@@ -40,6 +42,8 @@ export const getAllSlopes = async (
         filterQuery['location.city'] = new RegExp(county, 'i');
       }
     }
+    if (grade && grade !== '선택안함')
+      filterQuery['priority.grade'] = new RegExp(`^${grade}$`);
 
     // 검색어 필터 적용
     if (searchQuery) {
@@ -56,6 +60,11 @@ export const getAllSlopes = async (
         { 'location.roadAddress': new RegExp(searchQuery, 'i') },
         { 'disaster.riskType': new RegExp(searchQuery, 'i') },
         { 'disaster.riskLevel': new RegExp(searchQuery, 'i') },
+        { 'priority.usage': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeNature': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeType': new RegExp(searchQuery, 'i') },
+        { 'priority.slopeStructure': new RegExp(searchQuery, 'i') },
+        { 'priority.grade': new RegExp(searchQuery, 'i') },
       ];
     }
 
@@ -213,6 +222,16 @@ export const downloadSlopesExcel = async (
       '붕괴위험지구지정일자',
       '정비사업년도',
       '정비사업유형코드',
+      '비탈면용도',
+      '자연/인공',
+      '비탈면유형',
+      '비탈면구조',
+      '최고수직고',
+      '종단길이',
+      '평균경사',
+      '위치도',
+      '점수',
+      '등급',
     ];
 
     worksheet.columns = headers.map((header) => ({
@@ -320,6 +339,20 @@ export const downloadSlopesExcel = async (
         재해위험도평가등급코드: slope.disaster?.riskLevel || '',
         재해위험도평가점수합계: slope.disaster?.riskScore || '',
         재해위험도평가종류코드: slope.disaster?.riskType || '',
+        // Priority 필드 추가
+        비탈면용도: slope.priority?.usage || '',
+        '자연/인공': slope.priority?.slopeNature || '',
+        비탈면유형: slope.priority?.slopeType || '',
+        비탈면구조: slope.priority?.slopeStructure || '',
+        최고수직고: String(slope.priority?.maxVerticalHeight || ''),
+        종단길이: String(slope.priority?.longitudinalLength || ''),
+        평균경사: String(slope.priority?.averageSlope || ''),
+        위치도:
+          slope.priority?.images && slope.priority.images.length > 0
+            ? slope.priority.images[0].url || ''
+            : '',
+        점수: slope.priority?.Score || '',
+        등급: slope.priority?.grade || '',
       };
       worksheet.addRow(row);
     });
