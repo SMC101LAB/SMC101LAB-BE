@@ -8,7 +8,10 @@ import {
   findNearbySlopes,
   getAllSlopes,
 } from '../controllers/slope/slopeLookUp'; // 근처 데이터 조회, 전체 데이터 조회
-import { getOutlierData } from '../controllers/slope/slopeOutlierData'; // 이상값 찾기
+import {
+  getOutlierDup,
+  getOutlierEmpty,
+} from '../controllers/slope/slopeOutlierData'; // 이상값 찾기
 import {
   deleteSlopes,
   updateSlopes,
@@ -29,12 +32,12 @@ router.use(validateAuth as any); // 인증 미들웨어를 인증이 필요한 �
 
 router.post('/batch', ...(batchAddSlopeData as any));
 router.get('/batch', getAllSlopes as any);
-router.get('/outlier', getOutlierData as any);
+router.get('/outlier/dup', getOutlierDup as any);
+router.get('/outlier/empty', getOutlierEmpty as any);
 router.post('/create', createSlope as any);
 router.delete('/delete', deleteSlopes as any);
 router.put('/update', updateSlopes as any);
 router.get('/download', downloadSlopesExcel as any);
-
 router.get('/:slopeId/comments', getCommentsSlope as any);
 router.post('/:slopeId/comments', addCommentsSlope as any);
 router.put('/comments/:commentId', updateCommentsSlope as any);
