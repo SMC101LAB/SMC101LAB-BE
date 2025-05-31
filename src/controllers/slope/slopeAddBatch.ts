@@ -57,7 +57,6 @@ export interface ExcelRow {
   최고수직고: string;
   종단길이: string;
   평균경사: string;
-  위치도: string;
   점수: string;
   등급: string;
 }

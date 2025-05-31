@@ -229,7 +229,6 @@ export const downloadSlopesExcel = async (
       '최고수직고',
       '종단길이',
       '평균경사',
-      '위치도',
       '점수',
       '등급',
     ];
@@ -347,10 +346,6 @@ export const downloadSlopesExcel = async (
         최고수직고: String(slope.priority?.maxVerticalHeight || ''),
         종단길이: String(slope.priority?.longitudinalLength || ''),
         평균경사: String(slope.priority?.averageSlope || ''),
-        위치도:
-          slope.priority?.images && slope.priority.images.length > 0
-            ? slope.priority.images[0].url || ''
-            : '',
         점수: slope.priority?.Score || '',
         등급: slope.priority?.grade || '',
       };
