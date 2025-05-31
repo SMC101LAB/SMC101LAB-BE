@@ -1,5 +1,9 @@
 import { Schema, model, Document } from 'mongoose';
-
+interface SlopeImg {
+  // 이미지
+  url: string; // url
+  createdAt: Date; // 이미지 생성날짜
+}
 export interface ISlope extends Document {
   managementNo: string;
   name: string;
@@ -74,13 +78,12 @@ export interface ISlope extends Document {
     maxVerticalHeight: string; // 최고수직고 (단위: m)
     longitudinalLength: string; // 종단길이 (단위: m)
     averageSlope: string; // 평균경사 (단위: 도)
-    images: [
-      {
-        // 이미지
-        url: string; // url
-        createdAt: Date; // 이미지 생성날짜
-      }
-    ];
+    images: {
+      position?: SlopeImg;
+      start?: SlopeImg;
+      overview?: SlopeImg;
+      end?: SlopeImg;
+    };
     Score: string; //점수
     grade: string; // 등급
   };
@@ -173,12 +176,24 @@ const slopeSchema = new Schema<ISlope>({
     maxVerticalHeight: String, // 최고수직고 (단위: m)
     longitudinalLength: String, // 종단길이 (단위: m)
     averageSlope: String, // 평균경사 (단위: 도)
-    images: [
-      {
-        url: String, // url
-        createdAt: Date, // 이미지 생성날짜
+    images: {
+      position: {
+        url: { type: String },
+        createdAt: { type: Date, default: Date.now },
       },
-    ],
+      start: {
+        url: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+      overview: {
+        url: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+      end: {
+        url: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+    },
     Score: String, // 점수
     grade: String, // 등급
   },

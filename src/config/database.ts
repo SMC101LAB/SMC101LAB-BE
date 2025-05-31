@@ -5,7 +5,7 @@ dotenv.config();
 const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@smc101lab.11f1n.mongodb.net/smc101lab?retryWrites=true&w=majority&appName=SMC101LAB`
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@smc101lab.g4patsk.mongodb.net/?retryWrites=true&w=majority&appName=SMC101LAB`
     );
     console.log('MongoDB Connected');
   } catch (error) {
