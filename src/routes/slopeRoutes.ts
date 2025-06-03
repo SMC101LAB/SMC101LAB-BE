@@ -23,7 +23,10 @@ import {
   getCommentsSlope,
   updateCommentsSlope,
 } from '../controllers/slopeComment';
-import { updateAllSlopeImages } from '../controllers/slope/slopeImgController';
+import {
+  updateAllSlopeImages,
+  restoreImagesController,
+} from '../controllers/slope/slopeImgController';
 
 const router = Router();
 
@@ -45,5 +48,5 @@ router.put('/comments/:commentId', updateCommentsSlope as any);
 router.delete('/comments/:commentId', deleteCommentsSlope as any);
 
 router.put('/:historyNumber/images', updateAllSlopeImages as any); // 전체 위치 이미지 추가/수정
-
+router.post('/restore', restoreImagesController as any);
 export default router;
