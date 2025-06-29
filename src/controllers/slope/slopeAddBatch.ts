@@ -34,7 +34,7 @@ export interface ExcelRow {
   GIS좌표종점경도도: string;
   GIS좌표종점경도분: string;
   GIS좌표종점경도초: string;
-  급경사지일제조사이력번호: string;
+  급경사지일제조사이력번호: string; //smc번호
   일제조사일자: Date;
   붕괴위험지구번호?: string;
   붕괴위험지구명?: string;
@@ -77,7 +77,7 @@ export const batchAddSlopeData = [
       const rows = XLSX.utils.sheet_to_json<ExcelRow>(worksheet);
 
       const slopeData = rows
-        .filter((row) => row.관리번호 && row.급경사지명)
+        .filter((row) => row.급경사지일제조사이력번호)
         .map((row) => {
           return {
             managementNo: row.관리번호,

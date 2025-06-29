@@ -13,9 +13,9 @@ export interface ISlope extends Document {
     district: string;
     address?: string;
     roadAddress?: string;
-    mountainAddress: string; // 추가
-    mainLotNumber: string; // 추가
-    subLotNumber: string; // 추가
+    mountainAddress: string;
+    mainLotNumber: string;
+    subLotNumber: string;
     coordinates: {
       start: {
         type: string;
@@ -93,11 +93,9 @@ export interface ISlope extends Document {
 const slopeSchema = new Schema<ISlope>({
   managementNo: {
     type: String, // 관리번호
-    required: true,
   },
   name: {
     type: String, // 급경사지명
-    required: true,
   },
   location: {
     province: { type: String }, // 시도
@@ -165,7 +163,10 @@ const slopeSchema = new Schema<ISlope>({
     type: { type: String }, // 정비사업유형코드
   },
   slopeInspectionHistory: {
-    historyNumber: String, // 급경사지일제조사이력번호
+    historyNumber: {
+      type: String,
+      required: [true, 'SMC 번호(급경사지일제조사이력번호)는 필수입니다.'], // 급경사지일제조사이력번호
+    },
     inspectionDate: Date, // 일제조사일자
   },
   priority: {

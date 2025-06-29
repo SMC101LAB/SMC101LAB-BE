@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Request, Response } from 'express';
 import Slope from '../../models/Slope';
 import SlopeImageBackup from '../../models/SlopeImageBackup';
-import { AnyAaaaRecord } from 'node:dns';
 
 // AWS S3 Client 설정 (AWS SDK v3)
 const s3 = new S3Client({
@@ -90,7 +89,7 @@ const upload = multer({
 });
 
 // S3에서 이미지 삭제 헬퍼 함수 (AWS SDK v3용)
-const deleteImageFromS3 = async (imageUrl: string): Promise<void> => {
+export const deleteImageFromS3 = async (imageUrl: string): Promise<void> => {
   try {
     const s3Key = imageUrl.split('.com/')[1];
     const command = new DeleteObjectCommand({

@@ -93,7 +93,7 @@ export const updateUser = async (
     if (name) updateData.name = name;
     if (phone) updateData.phone = phone;
     if (organization) updateData.organization = organization;
-    if (isAdmin) updateData.isAdmin = isAdmin;
+    if (typeof isAdmin === 'boolean') updateData.isAdmin = isAdmin;
 
     // 전화번호 중복 확인
     if (phone) {

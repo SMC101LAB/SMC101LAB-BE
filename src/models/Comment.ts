@@ -1,20 +1,20 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface IComment extends Document {
-  slopeId: Schema.Types.ObjectId;
+  historyNumber: string; // slopeId 대신 historyNumber 사용
   userId: Schema.Types.ObjectId;
   content: string;
-  imageUrls: string[];
+  imageUrls: string[]; // S3 URL들이 저장될 배열
   createdAt: Date;
   updatedAt: Date;
 }
 
 const commentSchema = new Schema<IComment>(
   {
-    slopeId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Slope',
-      required: [true, '급경사지 정보는 필수입니다.'],
+    historyNumber: {
+      type: String,
+      required: [true, 'History Number는 필수입니다.'],
+      index: true, // 검색 성능을 위한 인덱스
     },
     userId: {
       type: Schema.Types.ObjectId,
@@ -37,8 +37,9 @@ const commentSchema = new Schema<IComment>(
   }
 );
 
-// 인덱스 생성
-commentSchema.index({ slopeId: 1, createdAt: -1 });
-commentSchema.index({ userId: 1 });
+// 인덱스 생성 - historyNumber 기준으로 변경
+commentSchema.index({ historyNumber: 1, createdAt: -1 }); // historyNumber별 최신 댓글 순 조회
+commentSchema.index({ userId: 1 }); // 사용자별 댓글 조회
+commentSchema.index({ historyNumber: 1, userId: 1 }); // 특정 historyNumber에서 특정 사용자 댓글 조회
 
 export default model<IComment>('Comment', commentSchema);
