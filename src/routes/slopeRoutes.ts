@@ -21,6 +21,7 @@ import {
   addCommentsSlope,
   deleteCommentsSlope,
   getCommentsSlope,
+  restoreCommentImagesController,
   updateCommentsSlope,
 } from '../controllers/slopeComment';
 import {
@@ -42,10 +43,14 @@ router.post('/create', createSlope as any);
 router.delete('/delete', deleteSlopes as any);
 router.put('/update', updateSlopes as any);
 router.get('/download', downloadSlopesExcel as any);
-router.get('/:slopeId/comments', getCommentsSlope as any);
-router.post('/:slopeId/comments', addCommentsSlope as any);
+
+//comment관련 라우터
+router.get('/:historyNumber/comments', getCommentsSlope as any);
+router.post('/:historyNumber/comments', addCommentsSlope as any);
 router.put('/comments/:commentId', updateCommentsSlope as any);
 router.delete('/comments/:commentId', deleteCommentsSlope as any);
+
+router.post('/comments/restore', restoreCommentImagesController as any);
 
 router.put('/:historyNumber/images', updateAllSlopeImages as any); // 전체 위치 이미지 추가/수정
 router.post('/restore', restoreImagesController as any);
